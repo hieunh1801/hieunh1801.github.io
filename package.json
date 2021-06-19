@@ -1,0 +1,16 @@
+{
+  "name": "hieunh1801.github.io",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/hieunh1801/hieunh1801.github.io",
+  "author": "hieunh21 <hieunh21@fpt.com.vn>",
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.8.2",
+    "vuepress-theme-meteorlxy": "^1.9.0"
+  },
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src --dest dist"
+  }
+}
