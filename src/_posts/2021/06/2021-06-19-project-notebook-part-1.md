@@ -43,3 +43,22 @@ title: Project Notebook part 1
 
 - Milestone 4:
     - Thêm bảo mật
+
+### Milestone 1
+- [ ] Lên trang https://start.spring.io/ để tải về template mẫu của java project
+    - [ ] Spring Boot Devtool
+- [ ] Init backend base project
+    - [ ] configs
+        - [ ] cors
+        - [ ] swagger
+        - [ ] 
+    - [ ] controller
+    - [ ] service
+    - [ ] repository
+    - [ ] mode
+        - [ ] dao
+        - [ ] entity
+        - [ ] form
+- [ ] init frontend base
+    - log service
+    - 
