@@ -14,6 +14,13 @@ Hướng dẫn phát triển hoàn thiện base project cho một dự án API c
 
 ## Khởi tạo dự án với  [start.spring.io](https://start.spring.io/)
 
+Chọn các dependency sau
+- Spring Boot DevTools: tự động restart lại server khi build
+- Loombook
+- Spring Web: sử dụng tomcat server
+- Spring Data JPA
+- Mysql Driver
+
 ## Cấu hình database và global app
 
 ```yaml
