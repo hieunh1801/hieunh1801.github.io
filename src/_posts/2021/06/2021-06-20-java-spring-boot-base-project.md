@@ -104,6 +104,23 @@ public class Swagger2Config {
 
 ## Cấu hình CORS
 
+```java
+// FILE configs/CorsConfiguration.java
+@Configuration
+public class CorsConfiguration 
+{
+    @Bean
+    public WebMvcConfigurer corsConfigurer() 
+    {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http://localhost:8080");
+            }
+        };
+    }
+}
+```
 
 ## Cấu hình loombook
 - Loombook là một thư viện giúp auto gen các thành phần của class thông qua các anotation
@@ -277,3 +294,35 @@ public class NoteServiceImpl implements NoteService {
 }
 ```
 ## Cấu hình các lớp ErrorHandler
+
+```java
+
+@ControllerAdvice
+public class ExceptionHelper {
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionHelper.class);
+    @ExceptionHandler(value = { InvalidInputException.class })
+    public ResponseEntity<Object> handleInvalidInputException(InvalidInputException ex) {
+        LOGGER.error("Invalid Input Exception: ",ex.getMessage());
+        return new ResponseEntity<Object>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { Unauthorized.class })
+    public ResponseEntity<Object> handleUnauthorizedException(Unauthorized ex) {
+        LOGGER.error("Unauthorized Exception: ",ex.getMessage());
+        return new ResponseEntity<Object>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { BusinessException.class })
+    public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
+        LOGGER.error("Business Exception: ",ex.getMessage());
+        return new ResponseEntity<Object>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ExceptionHandler(value = { Exception.class })
+    public ResponseEntity<Object> handleException(Exception ex) {
+        LOGGER.error("Exception: ",ex.getMessage());
+        return new ResponseEntity<Object>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+## Cấu hình logger

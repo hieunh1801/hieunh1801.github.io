@@ -32,3 +32,6 @@ title: Các nguồn tài liệu cho tự học java
 
 - [yellowcodebooks.com](https://yellowcodebooks.com/)
     - Tổng hợp các tus dạy code android
+
+- [https://howtodoinjava.com/](https://howtodoinjava.com/)
+    - Rất nhiều hướng dẫn về java
