@@ -112,12 +112,17 @@ public class Swagger2Config {
 ## Cấu hình CORS
 
 ```java
-// FILE configs/CorsConfiguration.java
+// FILE configs/CorsConfig.java
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
-public class CorsConfiguration 
-{
+public class CorsConfig {
     @Bean
-    public WebMvcConfigurer corsConfigurer() 
+    public WebMvcConfigurer corsConfigurer()
     {
         return new WebMvcConfigurer() {
             @Override
@@ -127,6 +132,7 @@ public class CorsConfiguration
         };
     }
 }
+
 ```
 
 ## Cấu hình loombook
