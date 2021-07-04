@@ -201,32 +201,84 @@ public class CorsConfig {
 </dependency>
 ```
 
-### Bước 2: Cấu hình
+### Bước 2: Viết lớp Utility - lớp này hỗ trợ convert dễ dàng hơn
+```java
+// FILE utility/ModelMapperUtility
+
+import com.hieunh.postmanagement.exception.CommonError;
+
+import org.hibernate.proxy.HibernateProxy;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ModelMapperUtility {
+    private final ModelMapper modelMapper = new ModelMapper();
+
+
+    public ModelMapperUtility() {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+    }
+
+    public <D> D map(Object source, Type destinationType) {
+        if (source instanceof HibernateProxy) {
+            throw new CommonError("Not found data", HttpStatus.NOT_FOUND);
+        }
+        return modelMapper.map(source, destinationType);
+    }
+
+    public <D> List<D> mapArray(List<Object> sources, Type destinationType) {
+        if (sources instanceof HibernateProxy) {
+            throw new CommonError("Not found data", HttpStatus.NOT_FOUND);
+        }
+        List<D> destinations = new ArrayList();
+
+        for (Object source : sources) {
+            D destination = this.modelMapper.map(source, destinationType);
+            destinations.add(destination);
+        }
+        return destinations;
+    }
+
+    public <S, D> Page<D> mapPage(Page<S> sources, Type destinationType) {
+        return sources.map(source -> this.modelMapper.map(source, destinationType));
+    }
+}
+```
+
+### Bước 3: Cấu hình
 
 ```java
 // FILE: configs/ModelMapperConfig.java
-package com.hieunh.note.config;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import com.hieunh.postmanagement.utility.ModelMapperUtility;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ModelMapperConfig {
 
+    // ModelMapper đã custom
+    @Bean
+    public ModelMapperUtility modelMapperUtility() {
+        return new ModelMapperUtility();
+    }
+
+    // ModelMapper gốc
     @Bean
     public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        // TODO: read more about strategies
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return  modelMapper;
+        return new ModelMapper();
     }
 }
 ```
 
 
-### Bước 3: Sử dụng như thế nào
+### Bước 4: Sử dụng như thế nào
 ``` java
 // FILE: NoteServiceImpl
 package com.hieunh.note.service;
