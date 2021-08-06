@@ -245,7 +245,7 @@ sidebar:
       header:
         icon: fas fa-list
         title: Content
-      list_number: false
+      list_number: true
       min_depth: 2
       max_depth: 5
     # ---------------------------------------
