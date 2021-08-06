@@ -1,6 +1,3 @@
 {
-  "editor.formatOnSave": true,
-  "editor.fontFamily": "Inconsolata, 'Courier New', monospace",
-  "editor.fontSize": 18
-  //   "prettier.printWidth": 120
+  "editor.formatOnSave": false
 }

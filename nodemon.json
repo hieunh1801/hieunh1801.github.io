@@ -1,0 +1,12 @@
+{
+  "ignore": [".git", "node_modules"],
+  "verbose": true,
+  "execMap": {
+    "js": "node"
+  },
+  "watch": ["source", "_config.*"],
+  "events": {
+    "restart": "hexo server",
+    "start": "hexo server"
+  }
+}
