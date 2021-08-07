@@ -106,5 +106,12 @@ Yes, I used to live there too. It's very beautiful.
 
 ## Do you like school?
 ```
-Yes, I do
+Do you like school?
+Yes, I do.
+What do you study?
+I study business.
+Do you like business?
+Yes, of course.
+What do you like about it?
+I like the money.
 ```
