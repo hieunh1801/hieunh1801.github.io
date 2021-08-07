@@ -57,31 +57,31 @@ cover:
   background: https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
   # background: https://bing.ioliu.cn/v1/rand?w=1920&h=1200
   logo: # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-Cover@3x.png
-  title: 'Volantis'
+  title: 'Hieu'
   subtitle: ''
   search: A Wonderful Theme for Hexo # search bar placeholder
   features:
-    - name: 文档
-      icon: #
-      img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f5c3.svg
-      url: /v4/getting-started/
-    - name: 帮助
+    - name: Tài liệu
+      icon: fa fa-book
+      img: # https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f5c3.svg
+      url: https://volantis.js.org/v5/getting-started/
+    - name: Categories
       icon: #
       img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f516.svg
-      url: faqs/
-    - name: 示例
-      icon: #
-      img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f396.svg
-      url: /examples/
-    - name: 社区
+      url: /categories/
+    # - name: Ví dụ
+    #   icon: #
+    #   img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f396.svg
+    #   url: /examples/
+    - name: Demo
       icon: #
       img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f389.svg
-      url: /contributors/
-    - name: 博客
+      url: https://github.com/volantis-x/demo
+    - name: Archives
       icon: #
       img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f4f0.svg
       url: /archives/
-    - name: 源码
+    - name: Source
       icon: #
       img: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f9ec.svg
       url: https://github.com/volantis-x/hexo-theme-volantis/
