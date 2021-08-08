@@ -1,7 +1,7 @@
 ---
-title: TRIẾT LÝ THÂM SÂU KHÔNG NGỜ TRONG NHỮNG CÂU NÓI CỦA JOKER
-date: 08/0/2021 07:37:00
-tags: ["facebook", "life"]
+title: Những triết lý trong câu nói của Jocker
+date: 06/08/2021 07:37:00
+tags: ["facebook", "life", "jocker"]
 categories: ["other"]
 ---
 

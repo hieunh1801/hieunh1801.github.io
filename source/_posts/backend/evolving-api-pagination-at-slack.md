@@ -1,7 +1,8 @@
 ---
 title: Cách slack phân trang
-date: 08/06/2021 20:33:00
-tags: ["english", "backend", "mysql", "pagination"]
+date: 06/08/2021 20:33:00
+tags: ["mysql", "pagination"]
+categories: ["backend"]
 ---
 
 ### Pagination strategies

@@ -1,6 +1,8 @@
 ---
-title: Path 3.1 - Navigation Between Two Screen
-date: 08/06/2021 22:47:00
-tags: ["android", "kotlin"]
-categories: ["android kotlin code lab"]
+title: Filename
+date: 08/28/2019 12:05:00
+updated: 
+tags:
+categories:
+lang: vi-vn
 ---
