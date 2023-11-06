@@ -1,4 +1,4 @@
-# Internal Beta
+# internal beta
 
 ![Alt text](image-3.png)
 
