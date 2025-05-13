@@ -8,7 +8,7 @@ export default defineConfig({
   site: "https://hieunh1801.github.io",
   integrations: [
     starlight({
-      title: "My Docs",
+      title: "Hieu ˚ʚ♡ɞ˚ Tham",
       social: [
         {
           icon: "github",
@@ -18,6 +18,13 @@ export default defineConfig({
       ],
       plugins: [
         starlightSidebarTopics([
+          {
+            id: "home",
+            label: "Home",
+            link: "/",
+            icon: "rocket",
+            items: ["index"],
+          },
           {
             id: "it",
             label: "IT",
