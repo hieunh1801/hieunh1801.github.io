@@ -1,0 +1,48 @@
+---
+interface Props {
+    en: string;
+    vi?: string;
+}
+
+const { en, vi = "Click to expand" } = Astro.props;
+---
+
+<div class="collapsible-wrapper">
+    <button type="button" aria-controls="vi" data-collapsible-toggle>
+        <span>{vi}</span>
+    </button>
+    <div aria-controls="en" class="hidden">
+        {en}
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll("[data-collapsible-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+            console.log("Button clicked");
+            const content = button.nextElementSibling;
+            console.log("Content:", content);
+            const icon = button.querySelector("svg");
+            const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+            if (isExpanded) {
+                content?.classList.add("hidden");
+                button.setAttribute("aria-expanded", "false");
+                icon?.classList.remove("rotate-180");
+            } else {
+                content?.classList.remove("hidden");
+                button.setAttribute("aria-expanded", "true");
+                icon?.classList.add("rotate-180");
+            }
+        });
+    });
+</script>
+
+<style>
+    .collapsible-wrapper {
+        @apply my-4;
+    }
+    .hidden {
+        display: none;
+    }
+</style>

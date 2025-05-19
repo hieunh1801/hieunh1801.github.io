@@ -1,0 +1,31 @@
+<input type="text" id="userInput" placeholder="Nhập câu của bạn" />
+<button onclick="checkAnswer()">Kiểm tra</button>
+<div id="result"></div>
+
+<script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+<script>
+  function checkAnswer() {
+    const userInput = document.getElementById("userInput").value;
+    const correctSentence = "Hello world, how are you."; // Câu đúng
+    const result = compareSentences(userInput, correctSentence);
+
+    let resultHTML = `
+        Trùng khớp: ${result.isExactMatch ? "Đúng" : "Sai"}<br>
+        Tỷ lệ từ đúng: ${result.accuracy}%<br>
+        Độ tương đồng: ${result.similarity}%<br>
+        Câu của bạn: ${result.normalizedUserInput}<br>
+        Câu đúng: ${result.normalizedCorrectSentence}<br>
+    `;
+    if (result.differences.length > 0) {
+      resultHTML += "Các lỗi:<ul>";
+      result.differences.forEach((diff) => {
+        resultHTML += `<li>Vị trí ${diff.position}: Bạn nhập "${diff.userWord}", đúng là "${diff.correctWord}"</li>`;
+      });
+      resultHTML += "</ul>";
+    } else {
+      resultHTML += "Không có lỗi!";
+    }
+
+    document.getElementById("result").innerHTML = resultHTML;
+  }
+</script>

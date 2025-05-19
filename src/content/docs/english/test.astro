@@ -1,0 +1,32 @@
+---
+import nlp from "compromise";
+
+interface Props {
+    name: string;
+    greeting?: string;
+}
+---
+
+<input type="text" id="userInput" placeholder="Nhập câu của bạn" />
+<button id="checkBtn">Kiểm tra</button>
+<div id="result"></div>
+
+<script is:client>
+    console.log("nlp", nlp);
+    document?.getElementById("checkBtn")?.addEventListener("click", () => {
+        const userInput = document.getElementById("userInput")?.value.trim();
+        const correctSentence = "Hello world, how are you.";
+
+        const isExactMatch = userInput === correctSentence;
+
+        let resultHTML = `
+      Trùng khớp: ${isExactMatch ? "Đúng" : "Sai"}<br>
+      Câu của bạn: ${userInput}<br>
+      Câu đúng: ${correctSentence}
+    `;
+        const result = document?.getElementById("result");
+        if (result !== null) {
+            result.innerHTML = resultHTML;
+        }
+    });
+</script>
