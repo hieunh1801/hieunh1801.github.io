@@ -1,0 +1,20 @@
+---
+title: "Secret of Thailand’s success (4.0)"
+description: "IELTS Reading Test"
+publishDate: "2025-11-15T11:00:00Z"
+# updatedDate: "14 August 2023"
+# coverImage:
+#   src: "./cover.png"
+#   alt: "Astro build wallpaper"
+tags: ["ielts-4.0", "ielts"]
+---
+
+A. Many people ask why Asian economies are growing so fast. There are many reasons: young people, big cities, more middle-class consumers, and strong markets. One more reason is women. When women have more chances to work, the economy becomes stronger. A new survey by MasterCard shows this clearly. It compares women and men in Asia using four things: jobs, university education, management positions, and income.
+
+B. According to the survey, Thailand is the best country for women’s progress. It got a score of 92.3 out of 100, where 100 means full gender equality. The survey interviewed about 300–350 women in 13 countries. Malaysia was second with 86.2, and China was third with 68.4. The average score in Asia was 67.7. The lowest scores were in South Korea (45.5), Indonesia (52.5), and Japan (54.5).Interestingly, these results match their economies. Thailand, Malaysia, and China have strong and growing economies. Thailand’s fast growth has inspired other Asian countries. Malaysia has a woman as the central bank governor. China is now one of the most powerful economies in the world.
+
+C. All three top countries have many women working. The lowest countries have high debt and fewer women in jobs. Research shows that when women take part in work, economies grow faster. Countries that ignore women’s talents will lose in the long run.For example, South Korea was doing well after the 1997–1998 crisis, but now it has problems with high household debt and slow growth.
+
+D. Korea also has low gender equality, according to the United Nations. In 2003, it was behind countries like Honduras and Ukraine. If Korea used more women workers, its economy could grow more. The same is true for Japan. Japan’s low number of working women connects to another problem — fewer babies. The average number of children per woman was only 1.29 in 2003 and went down again in 2004. This is a big problem for an old and rich country with high debt and pension issues. Many Japanese women do not want to have children early because they do not want to stop their careers.
+
+E. In Japan, many women still have to choose between a career and a family. Because of this, the birth rate keeps falling and the economy grows slowly. The United Nations’ leader Kofi Annan said that helping women is the best way to make an economy stronger.Thailand is doing better in this area. Its economy grows more than 6% each year, and many leaders in banks are women. For example, the Bank of Thailand has many women governors, and a woman leads one of Thailand’s biggest banks.This shows that giving women more chances is not only fair but also good for business.
