@@ -14,7 +14,10 @@ const {
 } = Astro.props;
 
 const dateTimeOptions: Intl.DateTimeFormatOptions = {
-	month: "long",
+	// month: "long",
+	hour: "2-digit",
+	minute: "2-digit",
+	year: "2-digit",
 };
 ---
 

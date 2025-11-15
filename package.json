@@ -4,7 +4,7 @@
 	"version": "6.10.0",
 	"scripts": {
 		"predeploy": "npm run build",
-		"deploy": "gh-pages -d dist",
+		"deploy": "gh-pages -d dist --dotfiles",
 		"dev": "astro dev",
 		"start": "astro dev",
 		"build": "astro build && touch dist/.nojekyll",
