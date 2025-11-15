@@ -7,7 +7,7 @@
 		"deploy": "gh-pages -d dist",
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro build",
+		"build": "astro build && touch dist/.nojekyll",
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",
 		"lint": "biome lint .",

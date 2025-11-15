@@ -21,7 +21,9 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 
 // https://astro.build/config
 export default defineConfig({
+	output: 'static',
 	site: siteConfig.url,
+	// base: "hieunh1801.github.io",
 	image: {
 		domains: ["webmention.io"],
 	},
