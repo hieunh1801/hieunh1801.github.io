@@ -6,6 +6,41 @@
 /* use a selector-based strategy for dark mode */
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"); */
+
+/*config font*/
+@font-face {
+	font-family: AdwaitaMono;
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/assets/AdwaitaMonoNerdFont-Regular.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "AdwaitaMono";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/assets/AdwaitaMonoNerdFont-Bold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "AdwaitaMono";
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("/assets/AdwaitaMonoNerdFont-Italic.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: NotoSans;
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/assets/NotoSans.ttf") format("truetype");
+}
+
 /* you could refactor below to use light-dark(), depending on your target audience */
 @theme {
 	--color-global-bg: oklch(98.48% 0 0);
@@ -14,6 +49,8 @@
 	--color-accent: oklch(55.27% 0.195 19.06);
 	--color-accent-2: oklch(18.15% 0 0);
 	--color-quote: oklch(55.27% 0.195 19.06);
+	--font-adwaita: "AdwaitaMono", system-ui, sans-serif;
+	--font-noto-sands: "NotoSans", system-ui, sans-serif;
 }
 
 @layer base {

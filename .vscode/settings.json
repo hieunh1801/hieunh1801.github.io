@@ -18,5 +18,7 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
-	"tailwindCSS.experimental.configFile": "./src/styles/global.css"
+	"tailwindCSS.experimental.configFile": "./src/styles/global.css",
+	"editor.fontFamily": "AdwaitaMono Nerd Font",
+	"editor.fontSize": 16
 }

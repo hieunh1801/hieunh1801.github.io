@@ -1,0 +1,11 @@
+---
+type Props = {
+	height?: number;
+};
+
+const { height = 16 } = Astro.props;
+---
+
+<div style={`height: ${height}px; min-height: 12px;`}>
+	<slot />
+</div>
