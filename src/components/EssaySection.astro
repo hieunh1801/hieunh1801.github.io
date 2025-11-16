@@ -1,11 +1,44 @@
 ---
+import TextToSpeech from "./TextToSpeech.astro";
+
 type Props = {
 	title?: string;
+	content?: string;
 };
+
+const { title, content } = Astro.props;
+
+const contentArr =
+	content
+		?.trim()
+		?.split("\n")
+		?.map((line) => line.trim()) || [];
 ---
 
+<script></script>
 <div
-	class="border-1px rounded-xl border border-solid border-gray-300 bg-gray-50 px-4 whitespace-pre-line"
+	id="essay-section"
+	class="w-full rounded-xl border border-solid border-gray-300 bg-gray-50 whitespace-pre-line dark:border-gray-700 dark:bg-gray-900"
 >
-	<slot />
+	<!-- {contentArr?.map((line) => <div class="px-4">{line}</div>)} -->
+	{
+		contentArr.map((item, index) => {
+			const isFirst = index === 0;
+			const isLast = contentArr?.length === index + 1;
+			return (
+				<div
+					class:list={[
+						`px-4 py-1 hover:cursor-pointer hover:bg-gray-200`,
+						{
+							"border-b border-dashed border-gray-300": !isLast,
+							"rounded-t-xl pt-2": isFirst,
+							"rounded-b-xl pb-2": isLast,
+						},
+					]}
+				>
+					<TextToSpeech text={item} lang="en-US" />
+				</div>
+			);
+		})
+	}
 </div>
