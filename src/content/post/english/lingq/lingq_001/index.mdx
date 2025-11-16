@@ -1,0 +1,29 @@
+---
+title: "LINGQ_001: Nice to meet you"
+description: "IELTS Reading Test"
+publishDate: "2025-11-16T12:45:00Z"
+# updatedDate: "14 August 2023"
+# coverImage:
+#   src: "./cover.png"
+#   alt: "Astro build wallpaper"
+tags: ["english_level1"]
+---
+import audioFile from './audio.mp3?url';       
+import EssaySection from '@/components/EssaySection.astro';
+import MP3Player from '@/components/MP3Player.astro';
+import Spacer from '@/components/Spacer.astro';
+
+<MP3Player src={audioFile}/>
+<Spacer />
+<EssaySection>
+A: Hello, What can I do for you?
+B: My name is Jane.
+A: How do you do?
+B: Glad to meet you.
+A: Glad to meet you too.
+B: What is your friends name.
+A: My friend's name is Sally.
+B: Hello Jane.
+A: Hello Sally.
+A: Nice to meet both of you
+</EssaySection>

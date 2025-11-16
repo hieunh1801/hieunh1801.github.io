@@ -21,7 +21,7 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 
 // https://astro.build/config
 export default defineConfig({
-	output: 'static',
+	output: "static",
 	site: siteConfig.url,
 	// base: "hieunh1801.github.io",
 	image: {
@@ -93,6 +93,7 @@ export default defineConfig({
 			exclude: ["@resvg/resvg-js"],
 		},
 		plugins: [tailwind(), rawFonts([".ttf", ".woff"])],
+		assetsInclude: ["**/*.mp3", "**/*.wav", "**/*.ogg"],
 	},
 	env: {
 		schema: {
