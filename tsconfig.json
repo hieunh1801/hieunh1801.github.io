@@ -7,6 +7,6 @@
 			"@/*": ["src/*"]
 		}
 	},
-	"include": [".astro/types.d.ts", "**/*"],
+	"include": [".astro/types.d.ts", "src/**/*", "**/*.ts", "**/*.astro"],
 	"exclude": ["node_modules", "**/node_modules/*", ".vscode", "dist"]
 }

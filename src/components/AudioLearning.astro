@@ -1,0 +1,458 @@
+---
+interface Props {
+	audioSrc: string;
+	vttContent: string;
+}
+
+interface ScriptCue {
+	start: number;
+	end: number;
+	text: string;
+}
+let scriptData: ScriptCue[] = [];
+
+const { audioSrc, vttContent } = Astro.props;
+
+const timeToSeconds = (time: string): number => {
+	const parts = time.split(":");
+	let seconds = 0;
+	if (parts.length === 3) {
+		seconds += parseInt(parts[0]) * 3600;
+		seconds += parseInt(parts[1]) * 60;
+		seconds += parseFloat(parts[2]);
+	} else if (parts.length === 2) {
+		seconds += parseInt(parts[0]) * 60;
+		seconds += parseFloat(parts[1]);
+	}
+	return seconds;
+};
+
+try {
+	const cues = vttContent
+		.split("\n\n")
+		.filter((block) => block.includes("-->") && !block.startsWith("WEBVTT"));
+
+	scriptData = cues
+		.map((cue) => {
+			const lines = cue.trim().split("\n");
+			// Cues phải có ít nhất 2 dòng (thời gian và text), hoặc 3 dòng (ID, thời gian, text)
+			if (lines.length < 2) return null;
+
+			// Lỗi 2: Xử lý VTT Cue ID. Bỏ qua dòng đầu tiên nếu nó không chứa '-->'
+			let timingLineIndex = 0;
+			// Nếu dòng đầu tiên không chứa thời gian, ta giả định đó là Cue ID và bắt đầu từ dòng 1
+			if (!lines[0].includes("-->") && lines.length > 2) {
+				timingLineIndex = 1;
+			}
+
+			const timingLine = lines[timingLineIndex];
+			const textLines = lines.slice(timingLineIndex + 1); // Lấy tất cả các dòng còn lại là text
+
+			if (!timingLine || !timingLine.includes("-->")) return null;
+
+			const [startTimeStr, endTimeStr] = timingLine
+				.split(" --> ")
+				.map((t) => t.trim().split(" ")[0]);
+
+			return {
+				start: timeToSeconds(startTimeStr),
+				end: timeToSeconds(endTimeStr),
+				text: textLines.join(" ").trim(),
+			};
+		})
+		.filter(Boolean) as ScriptCue[]; // Ép kiểu kết quả cuối cùng
+} catch (error) {
+	console.error("Lỗi khi đọc hoặc phân tích file VTT:", error);
+}
+
+const scriptDataJson = JSON.stringify(scriptData);
+---
+
+<div
+	class="audio-learner-container mx-auto max-w-2xl rounded-none border border-gray-200 bg-white p-6 font-sans"
+>
+	<audio id="learning-audio" controls src={audioSrc} class="hidden"></audio>
+	<div id="waveform-container" class="mb-4"></div>
+	<div class="mb-6 flex items-center justify-between space-x-6 border-b border-gray-300 p-4">
+		<div class="flex space-x-3">
+			<button
+				id="prev-btn"
+				class="control-btn rounded-full p-2 text-gray-700 transition duration-150 hover:bg-gray-100 active:bg-gray-200 disabled:opacity-30"
+				aria-label="Câu trước"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					stroke-width="2"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
+				</svg>
+			</button>
+
+			<button
+				id="next-btn"
+				class="control-btn rounded-full p-2 text-gray-700 transition duration-150 hover:bg-gray-100 active:bg-gray-200 disabled:opacity-30"
+				aria-label="Câu tiếp theo"
+			>
+				<svg
+					width="24"
+					height="24"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="2"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+				</svg>
+			</button>
+
+			<button
+				id="loop-btn"
+				class="control-btn rounded-full p-2 text-gray-500 transition duration-150 hover:bg-gray-100 active:bg-gray-200 disabled:opacity-30"
+				aria-label="Lặp lại câu hiện tại"
+			>
+				<svg
+					id="loop-icon-svg"
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 16 16"
+					><path
+						fill="#000000"
+						d="M12.893 5.238a3.987 3.987 0 0 1 1.1 3.015a4.475 4.475 0 0 0-.994-.226L13 8a2.99 2.99 0 0 0-.866-2.109a.5.5 0 0 1 .688-.725l.072.072Zm-4.637 5.761c-.112.319-.19.654-.228 1H6.707l1.148 1.149a.5.5 0 0 1 .058.638l-.058.069a.5.5 0 0 1-.638.058l-.069-.058l-2.002-2.002a.5.5 0 0 1-.057-.638l.057-.069l2.002-2.002a.5.5 0 0 1 .765.638l-.058.07l-1.148 1.147h1.55Zm.528-8.912l.07.057l2.001 2.002l.058.07a.5.5 0 0 1 0 .568l-.058.07l-2.001 2.001l-.07.058a.5.5 0 0 1-.568 0l-.07-.058l-.057-.07a.5.5 0 0 1 0-.568l.057-.07L9.294 5H6a3 3 0 0 0-2.995 2.824L3 8c0 .82.329 1.562.861 2.104a.5.5 0 0 1-.714.698A4 4 0 0 1 5.8 4.005L6 4l3.294-.001l-1.148-1.147l-.057-.07a.5.5 0 0 1 .695-.695ZM16 12.5a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0Zm-2.952-2.661a.62.62 0 0 0-.68.233c-.213.303-.58.726-1.092.98a.5.5 0 1 0 .448.895a3.66 3.66 0 0 0 .776-.529V14.5a.5.5 0 0 0 1 0v-4.076c0-.349-.267-.533-.452-.585Z"
+					></path></svg
+				>
+			</button>
+		</div>
+
+		<button
+			id="play-pause-btn"
+			class="flex h-10 w-10 items-center justify-center rounded-full bg-black p-3 text-white transition duration-150 hover:bg-gray-800"
+			aria-label="Phát hoặc Dừng"
+		>
+			<svg
+				id="play-icon"
+				xmlns="http://www.w3.org/2000/svg"
+				width="200"
+				height="200"
+				viewBox="0 0 24 24"
+				fill="#ffffff"
+				><g
+					fill="none"
+					stroke="#ffffff"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="1.5"
+					><path d="M12 21.5a9.5 9.5 0 1 0 0-19a9.5 9.5 0 0 0 0 19"></path><path
+						d="M8.909 7.864v8.27a.909.909 0 0 0 1.463.717l5.725-4.452a.909.909 0 0 0-.055-1.473L10.317 7.11a.909.909 0 0 0-1.408.754"
+					></path></g
+				></svg
+			>
+			<svg
+				id="pause-icon"
+				xmlns="http://www.w3.org/2000/svg"
+				width="200"
+				height="200"
+				viewBox="0 0 24 24"
+				fill="#ffffff"
+				class="hidden"
+				><g fill="none" stroke="#ffffff" stroke-width="1.5"
+					><path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M10.074 7.723H8.223a.5.5 0 0 0-.5.5v7.554a.5.5 0 0 0 .5.5h1.851a.5.5 0 0 0 .5-.5V8.223a.5.5 0 0 0-.5-.5m5.703 0h-1.851a.5.5 0 0 0-.5.5v7.554a.5.5 0 0 0 .5.5h1.851a.5.5 0 0 0 .5-.5V8.223a.5.5 0 0 0-.5-.5"
+					></path><rect width="18.5" height="18.5" x="2.75" y="2.75" rx="6"></rect></g
+				></svg
+			>
+		</button>
+
+		<div class="w-20 text-right text-sm font-medium text-gray-600">
+			<span id="current-time">0:00</span> / <span id="duration">0:00</span>
+		</div>
+	</div>
+
+	<div class="script-display h-96 overflow-y-auto border border-gray-300 p-4 text-gray-800">
+		<ul id="script-list" class="m-0 list-none p-0">
+			{
+				scriptData.length > 0 ? (
+					scriptData.map((cue, index) => (
+						<li
+							data-index={index}
+							data-start={cue.start}
+							data-end={cue.end}
+							class="script-cue m-0 cursor-pointer border-b border-dashed border-gray-300 py-2 transition-colors duration-150 last:border-b-0 hover:bg-gray-100"
+						>
+							{cue.text}
+						</li>
+					))
+				) : (
+					<p class="p-4 text-gray-500 italic">
+						Không tìm thấy script hoặc có lỗi khi phân tích VTT.
+					</p>
+				)
+			}
+		</ul>
+	</div>
+</div>
+
+<style>
+	/* CSS cho highlight (Black/White) và nút lặp */
+
+	/* Class để highlight câu hiện tại (bg-gray-200, text-gray-900, font-semibold) */
+	.script-cue.highlight {
+		background-color: #e5e7eb; /* Tương đương bg-gray-200 */
+		color: #1f2937; /* Tương đương text-gray-900 */
+		font-weight: 600; /* Tương đương font-semibold */
+	}
+
+	/* CSS cho nút Lặp khi được kích hoạt */
+	#loop-btn.active {
+		/* Khi active, chuyển sang màu đen để nổi bật */
+		color: #ffffff; /* Tương đương text-white */
+		background-color: #e5e7eb; /* Tương đương bg-black */
+	}
+</style><script define:vars={{ scriptDataJson, audioSrc }}>
+	// Đảm bảo các biến từ Frontmatter được định nghĩa
+	const scriptData = JSON.parse(scriptDataJson);
+	const audioFilePath = audioSrc;
+
+	// Hàm chuyển đổi giây thành định dạng MM:SS
+	const formatTime = (seconds) => {
+		const minutes = Math.floor(seconds / 60);
+		const secs = Math.floor(seconds % 60);
+		return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+	};
+
+	document.addEventListener("DOMContentLoaded", async () => {
+		// --- Tải Module WaveSurfer và Plugin (Sử dụng Import Động) ---
+
+		// let WaveSurfer;
+		// let RegionsPlugin;
+		// try {
+		// 	// Import các module NPM bất đồng bộ
+		// 	const wsModule = await import("wavesurfer.js");
+		// 	console.log(wsModule);
+		// 	const regionsModule = await import("@wavesurfer/regions");
+
+		// 	WaveSurfer = wsModule.default;
+		// 	RegionsPlugin = regionsModule.default;
+		// } catch (error) {
+		// 	console.error("Lỗi khi tải module WaveSurfer.js hoặc Regions Plugin:", error);
+		// 	// Có thể thêm logic fallback ở đây nếu cần thiết
+		// 	return;
+		// }
+
+		// --- 1. Lấy DOM Elements và Khởi tạo Biến ---
+		const scriptList = document.getElementById("script-list");
+		const playPauseBtn = document.getElementById("play-pause-btn");
+		const playIcon = document.getElementById("play-icon");
+		const pauseIcon = document.getElementById("pause-icon");
+		const prevBtn = document.getElementById("prev-btn");
+		const nextBtn = document.getElementById("next-btn");
+		const loopBtn = document.getElementById("loop-btn");
+		const currentTimeEl = document.getElementById("current-time");
+		const durationEl = document.getElementById("duration");
+		const waveformContainer = document.getElementById("waveform-container");
+
+		if (!scriptList || !playPauseBtn || !prevBtn || !nextBtn || !loopBtn || !waveformContainer) {
+			console.error("Thiếu các phần tử DOM quan trọng.");
+			return;
+		}
+
+		const scriptListElement = scriptList;
+		const cues = scriptListElement.querySelectorAll(".script-cue");
+		let currentCueIndex = -1;
+		let animationFrameId = null;
+		let isLooping = false;
+
+		// --- 2. Khởi tạo WaveSurfer ---
+
+		// const ws = WaveSurfer.create({
+		// 	container: "#waveform-container",
+		// 	waveColor: "#d1d5db",
+		// 	progressColor: "#000000",
+		// 	cursorColor: "#1f2937",
+		// 	barWidth: 2,
+		// 	barGap: 1,
+		// 	height: 80,
+		// 	url: audioFilePath,
+		// 	plugins: [
+		// 		RegionsPlugin.create({
+		// 			regionsMinLength: 0.05,
+		// 			color: "rgba(229, 231, 235, 0.3)",
+		// 		}),
+		// 	],
+		// });
+
+		// const wsRegions = ws.getActivePlugins()[0];
+
+		// --- 3. WaveSurfer Events và Đồng bộ hóa ---
+
+		// ws.on("ready", () => {
+		// 	durationEl.textContent = formatTime(ws.getDuration());
+
+		// 	// Tạo Regions dựa trên scriptData
+		// 	scriptData.forEach((cue, index) => {
+		// 		wsRegions.addRegion({
+		// 			id: `cue-${index}`,
+		// 			start: cue.start,
+		// 			end: cue.end,
+		// 			color: "rgba(229, 231, 235, 0.3)",
+		// 			drag: false,
+		// 			resize: false,
+		// 		});
+		// 	});
+		// });
+
+		// ws.on("play", () => {
+		// 	playIcon.classList.add("hidden");
+		// 	pauseIcon.classList.remove("hidden");
+		// 	startRAF();
+		// });
+		// ws.on("pause", () => {
+		// 	playIcon.classList.remove("hidden");
+		// 	pauseIcon.classList.add("hidden");
+		// 	stopRAF();
+		// });
+
+		// ws.on("timeupdate", () => {
+		// 	updateHighlight();
+		// });
+
+		// --- 4. Logic Highlight và Lặp lại (Dùng RAF) ---
+
+		const updateHighlight = () => {
+			const currentTime = ws.getCurrentTime();
+			let found = false;
+
+			for (let i = 0; i < scriptData.length; i++) {
+				const cue = scriptData[i];
+
+				if (currentTime >= cue.start && currentTime < cue.end) {
+					// Xử lý Lặp: Nếu audio chạm đến cuối câu VÀ chế độ lặp đang bật
+					if (currentTime >= cue.end - 0.05 && isLooping) {
+						ws.setTime(cue.start);
+						return;
+					}
+
+					if (i !== currentCueIndex) {
+						if (currentCueIndex !== -1 && cues[currentCueIndex]) {
+							cues[currentCueIndex].classList.remove("highlight");
+						}
+						if (cues[i]) {
+							cues[i].classList.add("highlight");
+							if (!ws.isPlaying()) {
+								cues[i].scrollIntoView({ behavior: "smooth", block: "center" });
+							}
+							currentCueIndex = i;
+						}
+					}
+					found = true;
+					break;
+				}
+			}
+			if (!found && currentCueIndex !== -1) {
+				cues[currentCueIndex].classList.remove("highlight");
+				currentCueIndex = -1;
+			}
+
+			currentTimeEl.textContent = formatTime(currentTime);
+		};
+
+		const tick = () => {
+			if (ws.isPlaying()) {
+				updateHighlight();
+			}
+			animationFrameId = window.requestAnimationFrame(tick);
+		};
+
+		const startRAF = () => {
+			if (animationFrameId === null) {
+				tick();
+			}
+		};
+
+		const stopRAF = () => {
+			if (animationFrameId !== null) {
+				window.cancelAnimationFrame(animationFrameId);
+				animationFrameId = null;
+			}
+		};
+
+		// --- 5. Logic Điều khiển ---
+
+		// Play/Pause Tùy Chỉnh
+		playPauseBtn.addEventListener("click", () => {
+			ws.playPause();
+		});
+
+		// Nút Loop Sentence
+		loopBtn.addEventListener("click", () => {
+			isLooping = !isLooping;
+			loopBtn.classList.toggle("active", isLooping);
+		});
+
+		// Nút Previous/Next Sentence
+		const navigateToSentence = (index) => {
+			if (index >= 0 && index < scriptData.length) {
+				const targetCue = scriptData[index];
+				ws.setTime(targetCue.start);
+
+				// Đồng bộ highlight ngay lập tức
+				if (currentCueIndex !== -1 && cues[currentCueIndex]) {
+					cues[currentCueIndex].classList.remove("highlight");
+				}
+				cues[index].classList.add("highlight");
+				cues[index].scrollIntoView({ behavior: "smooth", block: "center" });
+				currentCueIndex = index;
+
+				if (!ws.isPlaying()) {
+					ws.play();
+				}
+			}
+		};
+
+		prevBtn.addEventListener("click", () => {
+			const currentTime = ws.getCurrentTime();
+			const targetIndex =
+				currentCueIndex === -1 || currentTime <= scriptData[currentCueIndex].start
+					? currentCueIndex - 1
+					: currentCueIndex;
+
+			navigateToSentence(targetIndex);
+		});
+
+		nextBtn.addEventListener("click", () => {
+			navigateToSentence(currentCueIndex + 1);
+		});
+
+		// Click Script
+		scriptListElement.addEventListener("click", (event) => {
+			const target = event.target.closest(".script-cue");
+
+			if (target) {
+				const startTimeStr = target.dataset.start;
+				if (startTimeStr) {
+					const startTime = parseFloat(startTimeStr);
+
+					ws.setTime(startTime);
+
+					if (!ws.isPlaying()) {
+						ws.play();
+					}
+				}
+			}
+		});
+	});
+</script>
